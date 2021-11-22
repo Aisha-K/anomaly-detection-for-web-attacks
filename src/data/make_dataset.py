@@ -6,10 +6,6 @@ from dotenv import find_dotenv, load_dotenv
 
 import pandas as pd
 import regex as re
-#global options
-pd.set_option('display.max_columns', None)
-
-
 
 
 '''
@@ -71,13 +67,13 @@ def main(input_filepath, output_filepath):
 
 
     #reading in data:
-    with open('../data/raw/normalTrafficTest.txt') as file:
+    with open('../../data/raw/normalTrafficTest.txt') as file:
         data1 =  file.readlines()
 
-    with open('../data/raw/normalTrafficTraining.txt') as file:
+    with open('../../data/raw/normalTrafficTraining.txt') as file:
         data2 = file.readlines()
 
-    with open('../data/raw/anomalousTrafficTest.txt') as file:
+    with open('../../data/raw/anomalousTrafficTest.txt') as file:
         data3 = file.readlines()
 
     d3 = process_http_data(data3, True)
