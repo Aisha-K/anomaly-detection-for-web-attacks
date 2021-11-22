@@ -11,6 +11,7 @@ pd.set_option('display.max_columns', None)
 
 
 
+
 '''
 Outputs an array of dictionaries, with each dictionary representing a request.
 @param data_array an array containing each line of the txt file as an item
@@ -22,7 +23,7 @@ def process_http_data(data_array, is_anomalous):
         data_item = {}
         if data_array[i][0:3] == 'GET':
             data_item['method']='GET'
-            data_item['url']= data_array[i][4:]
+            data_item['url']= data_array[i][4:-1]
             i+=1
 
             while (i<len(data_array)-1) & (data_array[i]!='\n') :
@@ -31,9 +32,12 @@ def process_http_data(data_array, is_anomalous):
                 i += 1
             i +=2
 
-        elif data_array[i][0:4] == 'POST':
-            data_item['method']='POST'
-            data_item['url']= data_array[i][5:]
+        elif (data_array[i][0:4] == 'POST') | (data_array[i][0:3] == 'PUT'):
+            if (data_array[i][0:3] == 'PUT'):
+                data_item['method']='PUT'
+            else:
+                data_item['method']='POST'
+            data_item['url']= data_array[i][5:-1]
             i+=1
 
             while data_array[i]!='\n':
@@ -42,7 +46,7 @@ def process_http_data(data_array, is_anomalous):
                 i += 1
 
             i += 1
-            data_item['body'] = data_array[i]
+            data_item['body'] = data_array[i][0:-1]
             i+= 2
 
         else:
@@ -53,6 +57,7 @@ def process_http_data(data_array, is_anomalous):
         data_processed.append(data_item)
 
     return data_processed
+
 
 @click.command()
 @click.argument('input_filepath', type=click.Path(exists=True))
@@ -66,41 +71,26 @@ def main(input_filepath, output_filepath):
 
 
     #reading in data:
-
-    with open('../../data/raw/normalTrafficTest.txt') as file:
+    with open('../data/raw/normalTrafficTest.txt') as file:
         data1 =  file.readlines()
 
-    with open('../../data/raw/normalTrafficTraining.txt') as file:
+    with open('../data/raw/normalTrafficTraining.txt') as file:
         data2 = file.readlines()
 
-    with open('../../data/raw/anomalousTrafficTest.txt') as file:
+    with open('../data/raw/anomalousTrafficTest.txt') as file:
         data3 = file.readlines()
 
     d3 = process_http_data(data3, True)
     d2 = process_http_data(data2, False)
     d1 = process_http_data(data1, False)
 
-    df = pd.DataFrame(d1 + d2 + d3)
-    del(d3,d2,d1)
 
     logger.info(len(df) )
 
-    # process columns, extract features
-    df['browser'] = df['User-Agent'].str.extract( r'^(.*?) \(', expand=False)
-    df['system-information'] = df['User-Agent'].str.extract( r'\((.*?)\)', expand=False)
-    df['platform'] = df['User-Agent'].str.extract( r'\) (.*)$', expand=False)
-    df.drop('User-Agent',1)
+    df_orig = pd.DataFrame(d1 + d2 + d3)
+    del(d3,d2,d1)
 
-    #segmetnting url into words
-    df['url']
-    ['/', '&', ''='', '+']
-
-    df['body'] = df['body'].re.findall()
-
-    print(df.head())
-    df.to_excel('./test2.xlsx')
-
-
+    df.to_csv('../../data/interim/1_original_data_to_df.csv')
             
 
 
