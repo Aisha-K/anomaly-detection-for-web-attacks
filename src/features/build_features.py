@@ -1,3 +1,9 @@
+import os
+import pandas as pd, numpy as np
+import regex as re
+from gensim.models.doc2vec import Doc2Vec, TaggedDocument
+from sklearn.model_selection import train_test_split
+from sklearn import preprocessing
 
 COMMON_SQL_WORDS = ['create', 'insert', 'view', 'from' , 'select', 'alter', 'add', 'distinct', 'into','update','set','delete',
                     'truncate','as','order','between','where','and','or','null','drop','column','table','database','group',
@@ -44,7 +50,8 @@ def extract_args_only(row):
 
 def main():
     # load data
-    df = pd.from_csv('../../data/interim/1_original_data_to_df.csv')
+    file_dir = os.path.dirname(__file__)
+    df = pd.read_csv(  os.path.join(file_dir,'..','..','data', 'interim','1_original_data_to_df.csv') )
 
     #processing the columns
     df['browser'] = df['User-Agent'].str.extract( r'^(.*?) \(', expand=False)
@@ -84,6 +91,7 @@ def main():
 
     #fill nulls
     df['Content-Length'] = df['Content-Length'].fillna(0)
+    df['Content-Length'] = df['Content-Length'].astype(int)
 
     df = df.drop(to_encode_one_hot, axis=1)
 
@@ -106,7 +114,7 @@ def main():
     df = df.drop(['anomalous'],1).join(df_vecs)
 
 
-    df.to_csv('../../data/processed/3_extracted_features_with_word_vectors.csv')
+    df.to_csv(os.path.join(file_dir,'..','..','data','processed','3_extracted_features_with_word_vectors.csv'))
 
 
 if __name__ == '__main__':

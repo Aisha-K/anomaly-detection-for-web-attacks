@@ -4,7 +4,8 @@ import logging
 from pathlib import Path
 from dotenv import find_dotenv, load_dotenv
 
-import pandas as pd
+import os
+import pandas as pd, numpy as np
 import regex as re
 
 
@@ -65,15 +66,16 @@ def main(input_filepath, output_filepath):
     logger = logging.getLogger(__name__)
     logger.info('making final data set from raw data')
 
+    file_dir = os.path.dirname(__file__) # dir of this file
 
     #reading in data:
-    with open('../../data/raw/normalTrafficTest.txt') as file:
+    with open(  os.path.join(file_dir,'..','..','data','raw','normalTrafficTest.txt') ) as file:
         data1 =  file.readlines()
 
-    with open('../../data/raw/normalTrafficTraining.txt') as file:
+    with open( os.path.join(file_dir,'..','..','data','raw','normalTrafficTraining.txt')) as file:
         data2 = file.readlines()
 
-    with open('../../data/raw/anomalousTrafficTest.txt') as file:
+    with open( os.path.join(file_dir,'..','..','data','raw','anomalousTrafficTest.txt')) as file:
         data3 = file.readlines()
 
     d3 = process_http_data(data3, True)
@@ -81,12 +83,11 @@ def main(input_filepath, output_filepath):
     d1 = process_http_data(data1, False)
 
 
-    logger.info(len(df) )
-
     df_orig = pd.DataFrame(d1 + d2 + d3)
     del(d3,d2,d1)
+    logger.info(len(df_orig) )
 
-    df.to_csv('../../data/interim/1_original_data_to_df.csv')
+    df_orig.to_csv( os.path.join(file_dir,'..','..','data', 'interim','1_original_data_to_df.csv') )
             
 
 
