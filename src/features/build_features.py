@@ -1,4 +1,5 @@
 import os
+import logging
 import pandas as pd, numpy as np
 import regex as re
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
@@ -45,14 +46,31 @@ def extract_args_only(row):
         if type(x)==str:
             return re.split('[&=]', x)
         return []        
-    
 
+#returns a df containing the document vectors as columns    
+def vector_features(df, vec_size):
+    card_docs = [TaggedDocument(words, [i]) 
+            for i, words in enumerate(df.arg_words)]
+    #create vector model
+    model = Doc2Vec(vector_size=vec_size, min_count=1, epochs = 30)
+    model.build_vocab(card_docs)
+    model.train(card_docs, total_examples=model.corpus_count, epochs=model.epochs)
+    card2vec = [model.infer_vector(df['arg_words'][i]) 
+                for i in range(0,len(df['arg_words']))]
+    dtv= np.array(card2vec).tolist()
+    
+    # add vector to df as columns
+    df_vecs = pd.DataFrame( dtv )
+    df_vecs['anomalous'] = df['anomalous']
+    return df_vecs
 
 def main():
+    logger = logging.getLogger(__name__)
+
     # load data
     file_dir = os.path.dirname(__file__)
-    df = pd.read_csv(  os.path.join(file_dir,'..','..','data', 'interim','1_original_data_to_df.csv') )
-
+    df = pd.read_csv(  os.path.join(file_dir,'..','..','data', 'interim','1_original_data_to_df.csv') , index_col = 0)
+    
     #processing the columns
     df['browser'] = df['User-Agent'].str.extract( r'^(.*?) \(', expand=False)
     df['system-information'] = df['User-Agent'].str.extract( r'\((.*?)\)', expand=False)
@@ -95,27 +113,19 @@ def main():
 
     df = df.drop(to_encode_one_hot, axis=1)
 
-
-    #vectorization
-    card_docs = [TaggedDocument(words, [i]) 
-            for i, words in enumerate(df.arg_words)]
-    #create vector model
-    model = Doc2Vec(vector_size=96, min_count=1, epochs = 30)
-    model.build_vocab(card_docs)
-    model.train(card_docs, total_examples=model.corpus_count, epochs=model.epochs)
-    card2vec = [model.infer_vector(df['arg_words'][i]) 
-                for i in range(0,len(df['arg_words']))]
-    dtv= np.array(card2vec).tolist()
+    df.drop(['url_words', 'arg_words'], axis=1).to_csv(os.path.join(file_dir,'..','..','data','processed','features_with_doc_vector_0.csv'))
     
-    # add vector to df as columns
-    df_vecs = pd.DataFrame( dtv )
-    df_vecs['anomalous'] = df['anomalous']
-    df = df.drop(['url_words', 'arg_words'],axis=1)
-    df = df.drop(['anomalous'],1).join(df_vecs)
-
-
-    df.to_csv(os.path.join(file_dir,'..','..','data','processed','3_extracted_features_with_word_vectors.csv'))
+    logger.info("Starting arguments to doc vectorization:")
+    #vectorization of diferent sizes, save each dataframe created from those vectors
+    for i in [30, 60, 90, 120]:
+        logger.info(i)
+        df_vecs = vector_features(df, i)
+        df_combined = df.drop(['anomalous', 'url_words', 'arg_words'], axis=1).join(df_vecs)
+        df_combined.to_csv(os.path.join(file_dir,'..','..','data','processed',f'features_with_doc_vector_{i}.csv'))
 
 
 if __name__ == '__main__':
+    log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    logging.basicConfig(level=logging.INFO, format=log_fmt)
     main()
+    

@@ -2,7 +2,11 @@ Anomaly Detection for Web Attacks
 ==============================
 
 Creating an anomaly detection model to detect web attacks.
-Uses tthe CSIC dataset https://www.tic.itefi.csic.es/dataset/ for http log data to train the model on.
+Uses tthe CSIC dataset https://www.tic.itefi.csic.es/dataset/ for http log data to train the model on. Save the dowloaded datasets in the /data/raw/ folder.
+
+
+To view some results you can view the saved jupyter-notebook in /notebooks/.
+
 
 Project Organization
 ------------
