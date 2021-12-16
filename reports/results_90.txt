@@ -1,0 +1,60 @@
+
+Model: dec_tree.pkl
+0.4646773338317871
+              precision    recall  f1-score   support
+
+       False       0.96      0.97      0.96     21649
+        True       0.90      0.88      0.89      7471
+
+    accuracy                           0.94     29120
+   macro avg       0.93      0.92      0.93     29120
+weighted avg       0.94      0.94      0.94     29120
+
+
+Model: random_forest.pkl
+0.770667314529419
+              precision    recall  f1-score   support
+
+       False       0.96      0.99      0.98     21649
+        True       0.96      0.89      0.93      7471
+
+    accuracy                           0.96     29120
+   macro avg       0.96      0.94      0.95     29120
+weighted avg       0.96      0.96      0.96     29120
+
+
+Model: svm.pkl
+159.456645488739
+              precision    recall  f1-score   support
+
+       False       0.95      1.00      0.97     21649
+        True       0.98      0.84      0.91      7471
+
+    accuracy                           0.96     29120
+   macro avg       0.97      0.92      0.94     29120
+weighted avg       0.96      0.96      0.96     29120
+
+
+Model: gradient_boost.pkl
+0.7282984256744385
+              precision    recall  f1-score   support
+
+       False       0.98      0.99      0.98     21649
+        True       0.97      0.94      0.95      7471
+
+    accuracy                           0.98     29120
+   macro avg       0.97      0.96      0.97     29120
+weighted avg       0.98      0.98      0.98     29120
+
+
+Model: mlp.pkl
+0.04848027229309082
+              precision    recall  f1-score   support
+
+       False       0.97      0.99      0.98     21649
+        True       0.97      0.92      0.95      7471
+
+    accuracy                           0.97     29120
+   macro avg       0.97      0.96      0.96     29120
+weighted avg       0.97      0.97      0.97     29120
+
