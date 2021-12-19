@@ -1,5 +1,6 @@
 import pandas as pd, numpy as np
 import os
+import logging
 import pickle
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
