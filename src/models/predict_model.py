@@ -34,7 +34,7 @@ def main():
             model_predict(models_dir,p, results_file, X_test, y_test)
 
         #for each model that uses scaled data
-        for p in ['mlp.pkl']: #, 'ensemble_voting.pkl', 'ensemble_stacking.pkl']:
+        for p in ['mlp.pkl']:
         #for p in ['mlp.pkl', 'ensemble_voting.pkl', 'ensemble_stacking.pkl']:
             model_predict(models_dir,p, results_file, X_test_scaled, y_test)
 

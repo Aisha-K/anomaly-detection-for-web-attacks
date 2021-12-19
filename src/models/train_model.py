@@ -61,11 +61,21 @@ def ensemble(X_train_scaled, y_train, to_save_dir):
     with open( os.path.join( to_save_dir,'ensemble_stacking.pkl'), 'wb') as f:
         pickle.dump(ecl_stacking, f)
 
+
+def resample(X_train, y_train):
+    oversample = RandomOverSampler(sampling_strategy=0.5)
+    X_train, y_train = oversample.fit_resample(X_train, y_train)
+    undersample = RandomUnderSampler(sampling_strategy=0.6)
+    X_train, y_train = undersample.fit_resample(X_train, y_train)
+    return X_train, y_train
+
 def main():
     file_dir = os.path.dirname(__file__) 
+    logger = logging.getLogger(__name__)
 
 
     for i in ['0','30','60','90','120']: # iterate through different doc vec feature sizes
+        logger.info(i)
         models_dir = os.path.join( file_dir, '..','..','models', i)
         #create directories if they don't exist
         Path(models_dir).mkdir(parents=True, exist_ok=True)
@@ -77,6 +87,7 @@ def main():
         X_train, X_test, y_train, y_test = train_test_split(df_combined.drop('anomalous',1), df_combined['anomalous'], 
                                                         test_size=0.3, random_state=42, shuffle = True)
         
+
         #create scaled data, to be used for some models
         scaler = preprocessing.StandardScaler() 
         scaler.fit(X_train)  
@@ -99,4 +110,6 @@ def main():
 
 
 if __name__ == '__main__':
+    log_fmt = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    logging.basicConfig(level=logging.INFO, format=log_fmt)
     main()

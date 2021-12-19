@@ -1,60 +1,60 @@
 
 Model: dec_tree.pkl
-0.2345433235168457
+0.15099835395812988
               precision    recall  f1-score   support
 
-       False       0.96      0.97      0.96     21649
-        True       0.91      0.88      0.89      7471
+       False       0.96      0.96      0.96     21649
+        True       0.88      0.88      0.88      7471
 
-    accuracy                           0.95     29120
-   macro avg       0.93      0.92      0.93     29120
-weighted avg       0.95      0.95      0.95     29120
+    accuracy                           0.94     29120
+   macro avg       0.92      0.92      0.92     29120
+weighted avg       0.94      0.94      0.94     29120
 
 
 Model: random_forest.pkl
-0.5418610572814941
+0.36400389671325684
               precision    recall  f1-score   support
 
-       False       0.97      0.99      0.98     21649
-        True       0.97      0.92      0.94      7471
+       False       0.96      0.99      0.97     21649
+        True       0.96      0.88      0.92      7471
 
-    accuracy                           0.97     29120
-   macro avg       0.97      0.96      0.96     29120
-weighted avg       0.97      0.97      0.97     29120
+    accuracy                           0.96     29120
+   macro avg       0.96      0.93      0.95     29120
+weighted avg       0.96      0.96      0.96     29120
 
 
 Model: svm.pkl
-133.46780061721802
+98.46906518936157
               precision    recall  f1-score   support
 
-       False       0.95      0.99      0.97     21649
-        True       0.98      0.84      0.90      7471
+       False       0.94      0.99      0.96     21649
+        True       0.96      0.80      0.87      7471
 
-    accuracy                           0.95     29120
-   macro avg       0.96      0.92      0.94     29120
-weighted avg       0.95      0.95      0.95     29120
+    accuracy                           0.94     29120
+   macro avg       0.95      0.90      0.92     29120
+weighted avg       0.94      0.94      0.94     29120
 
 
 Model: gradient_boost.pkl
-0.49036097526550293
+0.27499961853027344
               precision    recall  f1-score   support
 
-       False       0.98      0.99      0.98     21649
-        True       0.97      0.93      0.95      7471
+       False       0.97      0.99      0.98     21649
+        True       0.96      0.90      0.93      7471
 
-    accuracy                           0.98     29120
-   macro avg       0.97      0.96      0.97     29120
-weighted avg       0.98      0.98      0.98     29120
+    accuracy                           0.97     29120
+   macro avg       0.96      0.95      0.95     29120
+weighted avg       0.97      0.97      0.97     29120
 
 
 Model: mlp.pkl
-0.041368722915649414
+0.035003662109375
               precision    recall  f1-score   support
 
-       False       0.98      0.99      0.99     21649
-        True       0.97      0.94      0.96      7471
+       False       0.97      0.98      0.98     21649
+        True       0.95      0.91      0.93      7471
 
-    accuracy                           0.98     29120
-   macro avg       0.98      0.97      0.97     29120
-weighted avg       0.98      0.98      0.98     29120
+    accuracy                           0.96     29120
+   macro avg       0.96      0.95      0.95     29120
+weighted avg       0.96      0.96      0.96     29120
 

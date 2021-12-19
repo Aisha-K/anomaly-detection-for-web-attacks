@@ -18,7 +18,7 @@ returns the number of words in x that are in words_list
 '''
 def num_in_words(x, words_list):
     count = 0
-    w = x.lower()
+    x = x.lower()
     for w in words_list:
         if w in x:
             count +=1
@@ -39,12 +39,12 @@ def extract_args_only(row):
     if row['method'] == 'GET':
         x = row['url']
         if '?' in x:
-            return re.split( '[&=]', x.split('?')[1] )
+            return re.split( '[/&=+]', x.split('?')[1] )
         return []    
     elif (row['method'] == 'POST') | (row['method'] == 'PUT'):
         x = row['body']
         if type(x)==str:
-            return re.split('[&=]', x)
+            return re.split('[/&=+]', x)
         return []        
 
 #returns a df containing the document vectors as columns    
@@ -78,7 +78,7 @@ def main():
     df.drop('User-Agent',1)
     df['protocol'] = df['url'].str.extract(r' (.*?)$')
     df['url_only'] = df['url'].apply(lambda x: extract_url_only(x))
-    df['url_words'] = df['url'].apply(lambda x:  re.split('[/]', x) )
+    df['url_words'] = df['url'].apply(lambda x:  re.split('[/.]', x) )
     df['arg_words'] = df.apply(lambda x: extract_args_only(x), axis=1)
 
     ## extracting more feature characteristics
